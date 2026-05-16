@@ -38,11 +38,13 @@ void	handle_interactive_line(t_loop_ctx *ctx)
 	free_cmds(ctx->p);
 }
 
-int	ms_loop(char **envp)
+int	ms_loop(char **envp, char **argv)
 {
 	t_loop_ctx	ctx;
 
 	if (env_init_from_envp(&ctx.sh, envp) == -1)
+		return (1);
+	if (env_init_defaults(&ctx.sh, argv[0], !envp || !envp[0]) == -1)
 		return (1);
 	ctx.interactive = 0;
 	if (isatty(STDIN_FILENO) && isatty(STDOUT_FILENO))

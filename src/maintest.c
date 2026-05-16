@@ -17,6 +17,5 @@
 int	main(int argc, char **argv, char **envp)
 {
 	(void)argc;
-	(void)argv;
-	return (ms_loop(envp));
+	return (ms_loop(envp, argv));
 }

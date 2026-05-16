@@ -33,6 +33,7 @@ typedef struct s_shell
 }	t_shell;
 
 int		env_init_from_envp(t_shell *sh, char **envp);
+int		env_init_defaults(t_shell *sh, char *argv0, int empty_envp);
 int		env_has(t_shell *sh, const char *key);
 int		env_set(t_shell *sh, const char *key, const char *value, int has_value);
 int		key_match(const char *a, const char *b);

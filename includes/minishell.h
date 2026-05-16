@@ -41,7 +41,7 @@ typedef struct s_loop_ctx
 	t_cmd	*p;
 }	t_loop_ctx;
 
-int		ms_loop(char **envp);
+int		ms_loop(char **envp, char **argv);
 int		exec_external(t_shell *sh, t_cmd *cmd, char **envp, char *path);
 int		exec_one_pipeline(t_shell *sh, t_cmd *cmd);
 int		exec_pipeline(t_shell *sh, t_cmd *cmds, int interactive);
