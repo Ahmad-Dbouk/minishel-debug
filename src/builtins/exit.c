@@ -25,14 +25,17 @@ void	exit_error(int type, const char *arg)
 		ft_putstr_fd(": numeric argument required\n", 2);
 	}
 	else if (type == 2)
+	{
+		ft_putstr_fd("exit\n", 2);
 		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
+	}
 }
 
 void	exit_no_args(t_shell *sh, int interactive)
 {
 	if (interactive)
 		ft_putstr_fd("exit\n", 1);
-	exit(sh->last_status);
+	exit((unsigned char)sh->last_status);
 }
 
 void	exit_invalid(const char *arg, int interactive)
@@ -61,5 +64,5 @@ int	exec_exit(t_shell *sh, t_cmd *cmds, int interactive)
 	}
 	if (interactive)
 		ft_putstr_fd("exit\n", 1);
-	exit(code);
+	exit((unsigned char)code);
 }

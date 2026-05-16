@@ -40,7 +40,7 @@ void	process_child_pid(t_shell *sh, t_execution_vars *vars)
 	if (apply_redirs(sh, vars->cur) != 0)
 		exit(1);
 	if (is_builtin_cmd(vars->cur))
-		exit(run_builtin(sh, vars->cur, 1));
+		exit(run_builtin(sh, vars->cur, 0));
 	child_exec(sh, vars->cur);
 }
 
