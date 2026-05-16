@@ -25,9 +25,10 @@ SRCS := src/main.c src/loop.c ./src/lexer/lexer_split.c ./src/lexer/lexer_split1
 	  ./src/lexer/lexer_split5.c ./src/lexer/lexer_split6.c ./src/parser/parser2.c \
 	  ./src/parser/parser3.c ./src/parser/parser4.c ./src/parser/parser5.c ./src/lexer/lexer_split7.c \
 	  ./src/parser/parser6.c ./src/utils.c ./src/builtins/unset.c ./src/builtins/export.c \
-	  ./src/builtins/export_helper.c ./src/heredoc/heredoc_read.c \
+	  ./src/builtins/export_helper.c\
 	  ./src/signals/signals.c ./src/signals/signals2.c ./src/builtins/export_print.c \
-	  ./src/builtins/exit.c ./src/builtins/exit_helper.c ./src/lexer/lexer_split8.c
+	  ./src/builtins/exit.c ./src/builtins/exit_helper.c ./src/lexer/lexer_split8.c\
+	  ./src/heredoc/heredoc_read.c
 
 OBJS := $(SRCS:.c=.o)
 
