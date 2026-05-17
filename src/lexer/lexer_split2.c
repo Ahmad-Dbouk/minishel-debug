@@ -73,7 +73,11 @@ char	*handle_single_case(t_shell *sh, char *line, int *i, int *j)
 			return (ft_str_empty());
 		return (ft_strdup(tmp));
 	}
-	return (ft_strdup ("$"));
+	if (!line[*i])
+		return (ft_strdup("$"));
+	if (line[*i] == '"')
+		return (ft_str_empty());
+	return (ft_strdup("$"));
 }
 
 char	*ft_expand(char *line, int *i, int *j, t_shell *sh)
