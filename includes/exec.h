@@ -25,5 +25,6 @@ int		apply_redirs(t_shell *sh, t_cmd *cmd);
 int		stdio_backup(t_stdio_bak *bak);
 void	stdio_restore(t_stdio_bak *bak);
 void	child_process(t_cmd *cmd, char **envp, char *path);
+void	print_cmd_not_found(const char *cmd);
 
 #endif

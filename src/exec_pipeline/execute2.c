@@ -19,7 +19,7 @@
 #include <stdio.h>
 #include "../../includes/execution.h"
 
-int	child_exec(t_shell *sh, t_cmd *cmd)
+void	child_exec(t_shell *sh, t_cmd *cmd)
 {
 	char	*path;
 	char	**envp;
@@ -28,13 +28,19 @@ int	child_exec(t_shell *sh, t_cmd *cmd)
 		exit(1);
 	path = resolve_cmd_path(sh, cmd->argv[0], &sh->last_status);
 	if (!path)
-		return (sh->last_status);
+	{
+		if (sh->last_status == 127)
+			print_cmd_not_found(cmd->argv[0]);
+		exit(sh->last_status);
+	}
 	envp = env_to_envp(sh);
 	if (!envp)
-		return (free(path), sh->last_status = 1, 1);
+	{
+		free(path);
+		exit(1);
+	}
 	child_process(cmd, envp, path);
 	exit(1);
-	return (0);
 }
 
 int	wait_pipeline(pid_t *pids, int n, pid_t last_pid)
@@ -54,7 +60,8 @@ int	wait_pipeline(pid_t *pids, int n, pid_t last_pid)
 			w = waitpid(pids[i], &status, 0);
 		if (w == -1)
 		{
-			perror("waitpid");
+			if (errno != ECHILD)
+				perror("waitpid");
 			i++;
 			continue ;
 		}

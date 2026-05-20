@@ -11,6 +11,14 @@
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+#include "../../libft/libft.h"
+
+void	print_cmd_not_found(const char *cmd)
+{
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd((char *)cmd, 2);
+	ft_putstr_fd(": command not found\n", 2);
+}
 
 static int	status_from_wait(int wstatus)
 {

@@ -25,7 +25,11 @@ int	exec_one_pipeline(t_shell *sh, t_cmd *cmd)
 		return (sh->last_status = 0, 0);
 	path = resolve_cmd_path(sh, cmd->argv[0], &sh->last_status);
 	if (!path)
+	{
+		if (sh->last_status == 127)
+			print_cmd_not_found(cmd->argv[0]);
 		return (sh->last_status);
+	}
 	envp = env_to_envp(sh);
 	if (!envp)
 		return (free(path), sh->last_status = 1, 1);

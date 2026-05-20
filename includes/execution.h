@@ -32,7 +32,7 @@ typedef struct s_execution_vars
 int		count_cmds(t_cmd *cmds);
 int		is_builtin_cmd(t_cmd *cmd);
 int		status_to_exitcode(int status);
-int		child_exec(t_shell *sh, t_cmd *cmd);
+void	child_exec(t_shell *sh, t_cmd *cmd);
 int		run_builtin(t_shell *sh, t_cmd *cmds, int interactive);
 int		child_apply_redirs(t_shell *sh, t_cmd *cmd);
 int		exec_end(t_shell *sh, t_execution_vars *vars);

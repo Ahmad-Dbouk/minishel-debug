@@ -64,7 +64,10 @@ int	process_commands(t_shell *sh, t_execution_vars *vars)
 			break ;
 		}
 		if (vars->pid == 0)
+		{
 			process_child_pid (sh, vars);
+			exit(1);
+		}
 		handle_vars_next(vars);
 	}
 	return (exec_end (sh, vars));
