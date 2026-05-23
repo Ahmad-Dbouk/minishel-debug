@@ -66,5 +66,6 @@ int	ms_loop(char **envp, char **argv)
 	}
 	if (ctx.interactive)
 		rl_clear_history();
-	return (env_clear(&ctx.sh.env), 0);
+	env_clear(&ctx.sh.env);
+	return (ctx.sh.last_status);
 }
