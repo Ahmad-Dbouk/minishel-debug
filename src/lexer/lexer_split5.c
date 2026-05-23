@@ -92,7 +92,7 @@ char	*handle_dollar_no_qautation(char *str, char *line,
 	str = ft_str_concat(str, cut);
 	if (!str)
 		return (NULL);
-	cut = ft_expand(line, &vars->i, &vars->j, sh);
+	cut = ft_expand(line, &vars->i, &vars->j, sh, 0);
 	if (!cut)
 	{
 		if (str)

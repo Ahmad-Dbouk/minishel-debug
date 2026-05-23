@@ -48,7 +48,8 @@ int	is_white_space(char c)
 	return (0);
 }
 
-char	*handle_single_case(t_shell *sh, char *line, int *i, int *j)
+char	*handle_single_case(t_shell *sh, char *line, int *i, int *j,
+	int inside_dquotes)
 {
 	char	*str;
 	char	*tmp;
@@ -76,21 +77,24 @@ char	*handle_single_case(t_shell *sh, char *line, int *i, int *j)
 	if (!line[*i])
 		return (ft_strdup("$"));
 	if (line[*i] == '"')
+	{
+		if (inside_dquotes)
+			return (ft_strdup("$"));
 		return (ft_str_empty());
+	}
 	return (ft_strdup("$"));
 }
 
-char	*ft_expand(char *line, int *i, int *j, t_shell *sh)
+char	*ft_expand(char *line, int *i, int *j, t_shell *sh, int inside_dquotes)
 {
 	char	*tmp;
 	char	*str;
 
-	(void)sh;
 	tmp = NULL;
 	while (line[*i] && (ft_isalnum(line[*i]) || line[*i] == '_'))
 		(*i)++;
 	if ((*i) == (*j))
-		return (handle_single_case(sh, line, i, j));
+		return (handle_single_case(sh, line, i, j, inside_dquotes));
 	str = ft_str_cut(line, *j, *i);
 	if (!str)
 		return (NULL);

@@ -32,7 +32,7 @@ char	*ft_split_qoutation(char *line, char *str,
 			if (!str)
 				return (NULL);
 			vars->j = ++(vars->i);
-			exp = ft_expand(line, &vars->i, &vars->j, sh);
+			exp = ft_expand(line, &vars->i, &vars->j, sh, 1);
 			if (!exp)
 				return (free(str), NULL);
 			str = ft_str_concat(str, exp);

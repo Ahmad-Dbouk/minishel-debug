@@ -58,8 +58,10 @@ char		*ft_str_cut(char *str, int start, int end);
 char		*ft_str_empty(void);
 char		*ft_str_concat(char *s1, char *s2);
 int			is_white_space(char c);
-char		*handle_single_case(t_shell *sh, char *line, int *i, int *j);
-char		*ft_expand(char *line, int *i, int *j, t_shell *sh);
+char		*handle_single_case(t_shell *sh, char *line, int *i, int *j,
+			int inside_dquotes);
+char		*ft_expand(char *line, int *i, int *j, t_shell *sh,
+			int inside_dquotes);
 char		*ft_end_split(char *line, char *str, char *cut, t_token_vars *vars);
 t_token		*init_token(char *line, t_shell *sh);
 void		print_tokens(t_token *head);
