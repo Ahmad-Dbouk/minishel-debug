@@ -22,7 +22,8 @@ SRCS := src/main.c src/loop.c ./src/lexer/lexer_split.c ./src/lexer/lexer_split1
 	  ./src/builtins/env.c ./src/exec_pipeline/execute1.c ./src/exec_pipeline/execute2.c \
 	  ./src/exec_pipeline/execute3.c ./src/executor/path_resolve_helper.c \
 	  ./src/lexer/lexer_split2.c ./src/lexer/lexer_split3.c ./src/lexer/lexer_split4.c \
-	  ./src/lexer/lexer_split5.c ./src/lexer/lexer_split6.c ./src/parser/parser2.c \
+	  ./src/lexer/lexer_split5.c ./src/lexer/lexer_split6.c ./src/lexer/lexer_split_ifs.c \
+	  ./src/parser/parser2.c \
 	  ./src/parser/parser3.c ./src/parser/parser4.c ./src/parser/parser5.c ./src/lexer/lexer_split7.c \
 	  ./src/parser/parser6.c ./src/utils.c ./src/builtins/unset.c ./src/builtins/export.c \
 	  ./src/builtins/export_helper.c\

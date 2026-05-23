@@ -15,8 +15,29 @@
 #include "../../libft/libft.h"
 #include "../../includes/env.h"
 
+static t_token	*insert_split_word(char *str, t_token *head, t_shell *sh)
+{
+	char	**fields;
+
+	fields = split_word_ifs(str, sh);
+	free(str);
+	if (!fields)
+		return (free_token(head), NULL);
+	if (!fields[0])
+		return (free(fields), head);
+	if (!fields[1])
+	{
+		head = insert_at_tail(head, fields[0], TOK_WORD);
+		free(fields);
+		if (!head)
+			return (NULL);
+		return (head);
+	}
+	return (insert_fields_at_tail(head, fields));
+}
+
 t_token	*insert_no_qaute(char *str, char *line,
-	t_token *head, t_token_vars *vars)
+	t_token *head, t_shell *sh, t_token_vars *vars)
 {
 	char	*cut;
 
@@ -29,17 +50,18 @@ t_token	*insert_no_qaute(char *str, char *line,
 		return (NULL);
 	}
 	str = ft_str_concat(str, cut);
-	if (str)
+	if (!str)
+		return (free_token(head), NULL);
+	if (vars->split_fields)
 	{
-		head = insert_at_tail(head, str, TOK_WORD);
+		head = insert_split_word(str, head, sh);
 		if (!head)
 			return (NULL);
+		return (head);
 	}
-	else
-	{
-		free_token(head);
+	head = insert_at_tail(head, str, TOK_WORD);
+	if (!head)
 		return (NULL);
-	}
 	return (head);
 }
 
@@ -48,12 +70,14 @@ char	*handle_no_qaute(char *str, char *line,
 {
 	if (line [vars->i] && line[vars->i] == '\'')
 	{
+		vars->split_fields = 0;
 		str = handle_single_quote (str, line, vars);
 		if (!str)
 			return (NULL);
 	}
 	if (line [vars->i] && line[vars->i] == '\"')
 	{
+		vars->split_fields = 0;
 		str = handle_double_quote (str, line, sh, vars);
 		if (!str)
 			return (NULL);

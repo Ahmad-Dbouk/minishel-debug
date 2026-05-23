@@ -38,6 +38,7 @@ typedef struct s_token_vars
 {
 	int				i;
 	int				j;
+	int				split_fields;
 	struct s_token	*next;
 }	t_token_vars;
 
@@ -50,6 +51,9 @@ void		set_str_i_j(char **str, t_token_vars *vars);
 void		print_tokens(t_token *head);
 void		free_token(t_token *head);
 t_token		*insert_at_tail(t_token *head, char *val, t_toktype type);
+t_token		*insert_fields_at_tail(t_token *head, char **fields);
+char		**split_word_ifs(char *word, t_shell *sh);
+void		free_fields(char **fields);
 t_token		*insert_at_tail_hd(t_token *head, char *val, int expand_heredoc);
 char		*expand_heredoc_line(t_shell *sh, char *line);
 t_toktype	get_toktype(char *str);
@@ -91,7 +95,7 @@ char		*return_malloc_fail(char *str);
 char		*handle_no_qaute(char *str, char *line,
 				t_shell *sh, t_token_vars *vars);
 t_token		*insert_no_qaute(char *str, char *line,
-				t_token *head, t_token_vars *vars);
+				t_token *head, t_shell *sh, t_token_vars *vars);
 void		skip_spaces(char *line, t_token_vars *vars);
 char		*extract_eof(char *line, t_token_vars *vars, int *expand_heredoc);
 int			find_closing_quate(char *line, t_token_vars *vars, char c);

@@ -28,6 +28,7 @@ static t_token	*consume_special_segment(char *line, t_shell *sh,
 
 	str = NULL;
 	set_str_i_j(&str, vars);
+	vars->split_fields = 1;
 	while (is_special(line, *vars))
 	{
 		if (check(line, vars))
@@ -38,7 +39,7 @@ static t_token	*consume_special_segment(char *line, t_shell *sh,
 		}
 		vars->i++;
 	}
-	head = insert_no_qaute(str, line, head, vars);
+	head = insert_no_qaute(str, line, head, sh, vars);
 	if (!head)
 		return (NULL);
 	return (head);
@@ -50,6 +51,10 @@ t_token	*ft_split_line(char *line, t_shell *sh, t_token *head)
 	t_token_vars	vars;
 
 	str = NULL;
+	vars.i = 0;
+	vars.j = 0;
+	vars.split_fields = 0;
+	vars.next = NULL;
 	skip_white_spaces (line, &vars);
 	while (line[vars.i])
 	{
