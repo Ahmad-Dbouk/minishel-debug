@@ -14,22 +14,28 @@
 
 int	print_errno(const char *ctx, const char *target)
 {
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd((char *)ctx, 2);
 	if (target && target[0])
-		printf("minishell: %s: %s: %s\n", ctx, target, strerror(errno));
-	else
-		printf("minishell: %s: %s\n", ctx, strerror(errno));
+	{
+		ft_putstr_fd(": ", 2);
+		ft_putstr_fd((char *)target, 2);
+	}
+	ft_putstr_fd(": ", 2);
+	ft_putstr_fd(strerror(errno), 2);
+	ft_putstr_fd("\n", 2);
 	return (1);
 }
 
 static int	cd_too_many_args(void)
 {
-	printf ("minishell: cd: too many arguments\n");
+	ft_putstr_fd("minishell: cd: too many arguments\n", 2);
 	return (1);
 }
 
 static int	cd_home_not_set(void)
 {
-	printf("minishell: cd: HOME not set\n");
+	ft_putstr_fd("minishell: cd: HOME not set\n", 2);
 	return (1);
 }
 
