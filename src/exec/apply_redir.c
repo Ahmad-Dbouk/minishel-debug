@@ -25,11 +25,15 @@ static int	open_redir_file(t_redir *r)
 
 int	redir_dup_to_fd(int fd, t_redir *r)
 {
+	int	target;
+
 	if (r->type == R_IN)
-		return (dup2(fd, STDIN_FILENO));
-	if (r->type == R_OUT || r->type == R_APPEND)
-		return (dup2(fd, STDOUT_FILENO));
-	return (-1);
+		target = STDIN_FILENO;
+	else if (r->type == R_OUT || r->type == R_APPEND)
+		target = STDOUT_FILENO;
+	else
+		return (-1);
+	return (dup2(fd, target));
 }
 
 int	set_heredoc_redir(t_shell *sh, t_redir *r)
@@ -43,7 +47,7 @@ int	set_heredoc_redir(t_shell *sh, t_redir *r)
 	{
 		close(r->heredoc_fd);
 		r->heredoc_fd = -1;
-		printf("minishell:");
+		ft_putstr_fd("minishell: ", 2);
 		perror("dup2");
 		sh->last_status = 1;
 		return (1);

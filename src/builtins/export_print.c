@@ -14,15 +14,15 @@
 
 static void	print_export_one(t_env *e)
 {
-	printf("declare -x ");
-	printf("%s", e->key);
+	ft_putstr_fd("declare -x ", STDOUT_FILENO);
+	ft_putstr_fd(e->key, STDOUT_FILENO);
 	if (e->value != NULL)
 	{
-		printf("=\"");
-		printf("%s", e->value);
-		printf("\"");
+		ft_putstr_fd("=\"", STDOUT_FILENO);
+		ft_putstr_fd(e->value, STDOUT_FILENO);
+		ft_putstr_fd("\"", STDOUT_FILENO);
 	}
-	printf("\n");
+	ft_putchar_fd('\n', STDOUT_FILENO);
 }
 
 static int	env_count_all(t_env *env)

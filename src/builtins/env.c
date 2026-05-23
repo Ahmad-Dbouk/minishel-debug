@@ -21,7 +21,7 @@ int	exec_env(t_shell *sh, t_cmd *cmd)
 		return (1);
 	if (cmd && cmd->argv && cmd->argv[1])
 	{
-		perror("minishell: env: too many arguments\n");
+		ft_putstr_fd("minishell: env: too many arguments\n", 2);
 		return (1);
 	}
 	cur = sh->env;
@@ -29,10 +29,11 @@ int	exec_env(t_shell *sh, t_cmd *cmd)
 	{
 		if (cur->has_value)
 		{
-			printf("%s=", cur->key);
+			ft_putstr_fd(cur->key, STDOUT_FILENO);
+			ft_putstr_fd("=", STDOUT_FILENO);
 			if (cur->value)
-				printf("%s", cur->value);
-			printf("\n");
+				ft_putstr_fd(cur->value, STDOUT_FILENO);
+			ft_putchar_fd('\n', STDOUT_FILENO);
 		}
 		cur = cur->next;
 	}

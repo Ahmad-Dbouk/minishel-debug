@@ -16,17 +16,16 @@
 #include <string.h>
 #include "../../includes/minishell.h"
 
-static void	putstr_fd(const char *s)
+static void	putstr_out(const char *s)
 {
-	if (!s)
-		return ;
-	printf("%s", s);
+	if (s)
+		ft_putstr_fd((char *)s, STDOUT_FILENO);
 }
 
-static void	putendl_fd(const char *s)
+static void	putendl_out(const char *s)
 {
-	putstr_fd(s);
-	printf("\n");
+	putstr_out(s);
+	ft_putchar_fd('\n', STDOUT_FILENO);
 }
 
 int	exec_pwd(void *sh)
@@ -37,17 +36,18 @@ int	exec_pwd(void *sh)
 	cwd = getcwd(NULL, 0);
 	if (cwd)
 	{
-		putendl_fd(cwd);
+		putendl_out(cwd);
 		free(cwd);
 		return (0);
 	}
 	pwd_fallback = env_get(sh, "PWD");
 	if (pwd_fallback && *pwd_fallback)
 	{
-		putendl_fd(pwd_fallback);
+		putendl_out(pwd_fallback);
 		return (0);
 	}
-	putstr_fd("minishell: pwd: ");
-	putendl_fd(strerror(errno));
+	ft_putstr_fd("minishell: pwd: ", 2);
+	ft_putstr_fd(strerror(errno), 2);
+	ft_putchar_fd('\n', 2);
 	return (1);
 }
