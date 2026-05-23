@@ -36,6 +36,8 @@ t_token	*handle_pipe(char *str, char *line, t_token *head, t_token_vars *vars)
 t_token	*handle_heredoc(char *str, char *line,
 	t_token *head, t_token_vars *vars)
 {
+	int	expand_hd;
+
 	str = ft_str_cut(line, vars->i - 1, vars->i + 1);
 	vars->i++;
 	while (line[vars->i] && is_white_space(line[vars->i]))
@@ -45,10 +47,11 @@ t_token	*handle_heredoc(char *str, char *line,
 	head = insert_at_tail(head, str, get_toktype(str));
 	if (!head)
 		return (NULL);
-	str = extract_eof(line, vars);
+	expand_hd = 1;
+	str = extract_eof(line, vars, &expand_hd);
 	if (!str)
 		return (free_token(head), NULL);
-	head = insert_at_tail(head, str, get_toktype(str));
+	head = insert_at_tail_hd(head, str, expand_hd);
 	return (head);
 }
 

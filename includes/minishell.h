@@ -52,6 +52,6 @@ char	*cmd_with_slash(char *name, int *out_status);
 char	*return_path(char **paths, char *name, int *out_status);
 int		is_dir(const char *path);
 char	*ms_read_stdin_line(size_t len, size_t cap, int got_any);
-int		loop_commands(t_cmd *cmd);
+int		loop_commands(t_cmd *cmd, t_shell *sh);
 
 #endif

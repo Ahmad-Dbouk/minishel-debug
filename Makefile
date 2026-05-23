@@ -28,7 +28,7 @@ SRCS := src/main.c src/loop.c ./src/lexer/lexer_split.c ./src/lexer/lexer_split1
 	  ./src/builtins/export_helper.c\
 	  ./src/signals/signals.c ./src/signals/signals2.c ./src/builtins/export_print.c \
 	  ./src/builtins/exit.c ./src/builtins/exit_helper.c ./src/lexer/lexer_split8.c\
-	  ./src/heredoc/heredoc_read.c
+	  ./src/heredoc/heredoc_read.c ./src/heredoc/heredoc_expand.c
 
 OBJS := $(SRCS:.c=.o)
 

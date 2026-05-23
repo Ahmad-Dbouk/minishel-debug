@@ -6,13 +6,36 @@
 /*   By: adbouk <adbouk@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/29 14:35:16 by adbouk            #+#    #+#             */
-/*   Updated: 2026/01/29 16:16:22 by adbouk           ###   ########.fr       */
+/*   Updated: 2026/05/19 00:00:00 by adbouk           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+#include "../../includes/lexer.h"
 
-int	prepare_heredocs(t_redir *r)
+static int	write_heredoc_line(int fd, t_shell *sh, t_redir *r, char *str)
+{
+	char	*out;
+
+	out = str;
+	if (r->expand_heredoc)
+	{
+		out = expand_heredoc_line(sh, str);
+		free(str);
+		if (!out)
+			return (1);
+	}
+	if (write(fd, out, ft_strlen(out)) < 0
+		|| write(fd, "\n", 1) < 0)
+	{
+		free(out);
+		return (1);
+	}
+	free(out);
+	return (0);
+}
+
+int	prepare_heredocs(t_shell *sh, t_redir *r)
 {
 	int		pipe_fd[2];
 	char	*str;
@@ -31,9 +54,12 @@ int	prepare_heredocs(t_redir *r)
 			free(str);
 			break ;
 		}
-		write(pipe_fd[1], str, ft_strlen(str));
-		write(pipe_fd[1], "\n", 1);
-		free(str);
+		if (write_heredoc_line(pipe_fd[1], sh, r, str))
+		{
+			close(pipe_fd[1]);
+			close(pipe_fd[0]);
+			return (1);
+		}
 	}
 	close(pipe_fd[1]);
 	r->heredoc_fd = pipe_fd[0];
@@ -62,7 +88,7 @@ void	close_all_heredoc_fds(t_cmd *cmd)
 	}
 }
 
-int	loop_commands(t_cmd *cmd)
+int	loop_commands(t_cmd *cmd, t_shell *sh)
 {
 	t_cmd	*cur;
 	t_redir	*tmp;
@@ -75,7 +101,7 @@ int	loop_commands(t_cmd *cmd)
 		{
 			if (tmp->type == R_HEREDOC)
 			{
-				if (prepare_heredocs(tmp))
+				if (prepare_heredocs(sh, tmp))
 				{
 					close_all_heredoc_fds(cmd);
 					return (1);

@@ -46,12 +46,15 @@ char	*handle_here_quate(char *str, char *line, t_token_vars *vars)
 	return (str);
 }
 
-char	*extract_eof(char *line, t_token_vars *vars)
+char	*extract_eof(char *line, t_token_vars *vars, int *expand_heredoc)
 {
 	char	*str;
 	char	*cut;
+	int		saw_quote;
 
 	str = NULL;
+	saw_quote = 0;
+	*expand_heredoc = 1;
 	vars->j = vars->i;
 	while (line[vars->i] && !is_white_space(line[vars->i])
 		&& line[vars->i] != '>' && line[vars->i] != '<'
@@ -59,15 +62,17 @@ char	*extract_eof(char *line, t_token_vars *vars)
 	{
 		if (line[vars->i] == '"' || line[vars->i] == '\'')
 		{
+			saw_quote = 1;
 			str = handle_here_quate(str, line, vars);
 			if (!str)
 				return (NULL);
 		}
 		vars->i++;
 	}
+	if (saw_quote)
+		*expand_heredoc = 0;
 	cut = ft_str_cut(line, vars->j, vars->i);
 	str = ft_str_concat(str, cut);
-	printf("str is: %s\n", str);
 	return (str);
 }
 

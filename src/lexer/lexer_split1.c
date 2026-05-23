@@ -89,6 +89,7 @@ t_token	*insert_at_tail(t_token *head, char *val, t_toktype type)
 	}
 	new_node->value = val;
 	new_node->type = type;
+	new_node->hd_expand = 0;
 	new_node->next = NULL;
 	cur = head;
 	if (!head)
@@ -96,5 +97,19 @@ t_token	*insert_at_tail(t_token *head, char *val, t_toktype type)
 	while (cur->next)
 		cur = cur->next;
 	cur->next = new_node;
+	return (head);
+}
+
+t_token	*insert_at_tail_hd(t_token *head, char *val, int expand_heredoc)
+{
+	t_token	*cur;
+
+	head = insert_at_tail(head, val, TOK_WORD);
+	if (!head)
+		return (NULL);
+	cur = head;
+	while (cur->next)
+		cur = cur->next;
+	cur->hd_expand = expand_heredoc;
 	return (head);
 }

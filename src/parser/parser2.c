@@ -33,7 +33,7 @@ t_redir_type	return_redir_type(t_toktype type)
 	return (0);
 }
 
-t_redir	*redir_new(t_redir_type type, char *target)
+t_redir	*redir_new(t_redir_type type, char *target, int expand_heredoc)
 {
 	t_redir	*new;
 
@@ -48,6 +48,7 @@ t_redir	*redir_new(t_redir_type type, char *target)
 		return (NULL);
 	}
 	new->heredoc_fd = -1;
+	new->expand_heredoc = expand_heredoc;
 	new->next = NULL;
 	return (new);
 }

@@ -93,7 +93,12 @@ int	handle_redir_token(t_parse_ctx *ctx, t_token **cur)
 {
 	t_redir	*redir;
 
-	redir = redir_new(return_redir_type((*cur)->type), (*cur)->next->value);
+	if ((*cur)->type == TOK_HEREDOC)
+		redir = redir_new(R_HEREDOC, (*cur)->next->value,
+				(*cur)->next->hd_expand);
+	else
+		redir = redir_new(return_redir_type((*cur)->type),
+				(*cur)->next->value, 0);
 	if (!redir)
 	{
 		free_parser(ctx->token, ctx->cmd, ctx->words);

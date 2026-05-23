@@ -30,6 +30,7 @@ typedef struct s_token
 {
 	t_toktype		type;
 	char			*value;
+	int				hd_expand;
 	struct s_token	*next;
 }	t_token;
 
@@ -49,6 +50,8 @@ void		set_str_i_j(char **str, t_token_vars *vars);
 void		print_tokens(t_token *head);
 void		free_token(t_token *head);
 t_token		*insert_at_tail(t_token *head, char *val, t_toktype type);
+t_token		*insert_at_tail_hd(t_token *head, char *val, int expand_heredoc);
+char		*expand_heredoc_line(t_shell *sh, char *line);
 t_toktype	get_toktype(char *str);
 void		free_token(t_token *head);
 char		*ft_str_cut(char *str, int start, int end);
@@ -88,7 +91,7 @@ char		*handle_no_qaute(char *str, char *line,
 t_token		*insert_no_qaute(char *str, char *line,
 				t_token *head, t_token_vars *vars);
 void		skip_spaces(char *line, t_token_vars *vars);
-char		*extract_eof(char *line, t_token_vars *vars);
+char		*extract_eof(char *line, t_token_vars *vars, int *expand_heredoc);
 int			find_closing_quate(char *line, t_token_vars *vars, char c);
 char		*handle_here_quate(char *str, char *line, t_token_vars *vars);
 t_token		*ft_check_first(t_token *head);

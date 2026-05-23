@@ -30,6 +30,7 @@ typedef struct s_redir
 	t_redir_type	type;
 	char			*target;
 	int				heredoc_fd;
+	int				expand_heredoc;
 	struct s_redir	*next;
 }	t_redir;
 
@@ -60,7 +61,7 @@ void			print_cmd_list(t_cmd *head);
 void			free_cmds(t_cmd *cmd);
 int				is_redir_token(t_toktype type);
 t_redir_type	return_redir_type(t_toktype type);
-t_redir			*redir_new(t_redir_type type, char *target);
+t_redir			*redir_new(t_redir_type type, char *target, int expand_heredoc);
 t_redir			*insert_redir_at_tail(t_redir *redir, t_redir *new_redir);
 void			free_cmd_args(char	**argv);
 int				init_new_cmd(t_cmd **new_cmd);

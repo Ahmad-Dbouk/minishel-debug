@@ -32,7 +32,7 @@ void	handle_interactive_line(t_loop_ctx *ctx)
 	}
 	if (ctx->interactive)
 		add_history(ctx->line);
-	if (loop_commands(ctx->p))
+	if (loop_commands(ctx->p, &ctx->sh))
 		return (free_token (ctx->head), free_cmds (ctx->p));
 	exec_pipeline(&ctx->sh, ctx->p, ctx->interactive);
 	free_cmds(ctx->p);
