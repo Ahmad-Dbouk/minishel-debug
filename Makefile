@@ -4,6 +4,7 @@ CFLAGS := -Wall -Wextra -Werror
 INCLUDES := -Iincludes
 
 SRCS := src/main.c src/loop.c ./src/lexer/lexer_split.c ./src/lexer/lexer_split1.c \
+		./src/lexer/lexer_split1_utils.c \
 		./libft/ft_toupper.c ./libft/ft_tolower.c ./libft/ft_substr.c ./libft/ft_strtrim.c \
 		./libft/ft_strrchr.c ./libft/ft_strnstr.c ./libft/ft_strncmp.c ./libft/ft_strmapi.c \
 		./libft/ft_strlen.c ./libft/ft_strlcpy.c ./libft/ft_strlcat.c ./libft/ft_strjoin.c\
@@ -21,8 +22,8 @@ SRCS := src/main.c src/loop.c ./src/lexer/lexer_split.c ./src/lexer/lexer_split1
 	  ./src/builtins/echo.c ./src/exec/stdio_backup.c ./src/builtins/cd.c ./src/builtins/pwd.c \
 	  ./src/builtins/env.c ./src/exec_pipeline/execute1.c ./src/exec_pipeline/execute2.c \
 	  ./src/exec_pipeline/execute3.c ./src/executor/path_resolve_helper.c \
-	  ./src/lexer/lexer_split2.c ./src/lexer/lexer_split3.c ./src/lexer/lexer_split4.c \
-	  ./src/lexer/lexer_split5.c ./src/lexer/lexer_split6.c ./src/lexer/lexer_split_ifs.c \
+	  ./src/lexer/lexer_split2.c ./src/lexer/lexer_split2_utils.c ./src/lexer/lexer_split3.c ./src/lexer/lexer_split4.c \
+	  ./src/lexer/lexer_split5.c ./src/lexer/lexer_split6.c ./src/lexer/lexer_split_ifs.c ./src/lexer/lexer_split_ifs_utils.c \
 	  ./src/parser/parser2.c \
 	  ./src/parser/parser3.c ./src/parser/parser4.c ./src/parser/parser5.c ./src/lexer/lexer_split7.c \
 	  ./src/parser/parser6.c ./src/utils.c ./src/builtins/unset.c ./src/builtins/export.c \

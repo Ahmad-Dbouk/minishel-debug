@@ -57,16 +57,15 @@ char	*extract_eof(char *line, t_token_vars *vars, int *expand_heredoc)
 	*expand_heredoc = 1;
 	vars->j = vars->i;
 	while (line[vars->i] && !is_white_space(line[vars->i])
-		&& line[vars->i] != '>' && line[vars->i] != '<'
-		&& line[vars->i] != '|')
+		&& line[vars->i] != '>' && line[vars->i] != '<')
 	{
-		if (line[vars->i] == '"' || line[vars->i] == '\'')
-		{
-			saw_quote = 1;
+		if (line[vars->i] == '|')
+			break ;
+		if ((line[vars->i] == '"' || line[vars->i] == '\'')
+			&& (++saw_quote))
 			str = handle_here_quate(str, line, vars);
-			if (!str)
-				return (NULL);
-		}
+		if (!str && saw_quote)
+			return (NULL);
 		vars->i++;
 	}
 	if (saw_quote)

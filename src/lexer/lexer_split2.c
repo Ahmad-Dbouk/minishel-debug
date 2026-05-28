@@ -48,30 +48,33 @@ int	is_white_space(char c)
 	return (0);
 }
 
-char	*handle_single_case(t_shell *sh, char *line, t_expand_ctx *ctx)
+static char	*expand_braced_var(t_shell *sh, char *line, t_expand_ctx *ctx)
 {
 	char	*str;
 	char	*tmp;
 
+	ctx->j = ++(ctx->i);
+	while (line[ctx->i] && line[ctx->i] != '}')
+		(ctx->i)++;
+	if (!line[ctx->i])
+		return (NULL);
+	str = ft_str_cut(line, ctx->j, ctx->i);
+	if (!str)
+		return (NULL);
+	tmp = env_find_alias(sh->env, str);
+	free(str);
+	(ctx->j) = ++(ctx->i);
+	if (!tmp)
+		return (ft_str_empty());
+	return (ft_strdup(tmp));
+}
+
+char	*handle_single_case(t_shell *sh, char *line, t_expand_ctx *ctx)
+{
 	if (line[ctx->i] && line[ctx->i] == '?')
 		return ((ctx->j) = ++(ctx->i), ft_itoa(sh->last_status));
 	if (line[ctx->i] == '{')
-	{
-		ctx->j = ++(ctx->i);
-		while (line[ctx->i] && line[ctx->i] != '}')
-			(ctx->i)++;
-		if (!line[ctx->i])
-			return (NULL);
-		str = ft_str_cut(line, ctx->j, ctx->i);
-		if (!str)
-			return (NULL);
-		tmp = env_find_alias(sh->env, str);
-		free(str);
-		(ctx->j) = ++(ctx->i);
-		if (!tmp)
-			return (ft_str_empty());
-		return (ft_strdup(tmp));
-	}
+		return (expand_braced_var(sh, line, ctx));
 	if (!line[ctx->i])
 		return (ft_strdup("$"));
 	if (line[ctx->i] == '"' || line[ctx->i] == '\'')
@@ -102,16 +105,4 @@ char	*ft_expand(char *line, t_shell *sh, t_expand_ctx *ctx)
 	if (!tmp)
 		return (ft_str_empty());
 	return (ft_strdup(tmp));
-}
-
-char	*ft_end_split(char *line, char *str, char *cut, t_token_vars *vars)
-{
-	if (!line[vars->i])
-		return (free(str), NULL);
-	cut = ft_str_cut(line, vars->j, vars->i);
-	if (!cut)
-		return (free(str), NULL);
-	str = ft_str_concat(str, cut);
-	vars->j = (vars->i) + 1;
-	return (str);
 }

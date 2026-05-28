@@ -25,41 +25,10 @@ static const char	*get_ifs(t_shell *sh)
 	return (ifs);
 }
 
-static int	is_ifs_char(char c, const char *ifs)
+static int	count_fields(const char *word, const char *ifs)
 {
-	int	i;
-
-	i = 0;
-	while (ifs[i])
-	{
-		if (ifs[i] == c)
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
-void	free_fields(char **fields)
-{
-	int	i;
-
-	if (!fields)
-		return ;
-	i = 0;
-	while (fields[i])
-	{
-		free(fields[i]);
-		i++;
-	}
-	free(fields);
-}
-
-static char	**fields_from_word(const char *word, const char *ifs)
-{
-	char	**out;
-	int		count;
 	int		i;
-	int		start;
+	int		count;
 
 	count = 0;
 	i = 0;
@@ -73,10 +42,15 @@ static char	**fields_from_word(const char *word, const char *ifs)
 		while (word[i] && is_ifs_char(word[i], ifs))
 			i++;
 	}
-	out = malloc(sizeof(char *) * (count + 1));
-	if (!out)
-		return (NULL);
-	out[count] = NULL;
+	return (count);
+}
+
+static int	fill_fields(char **out, const char *word, const char *ifs)
+{
+	int		i;
+	int		start;
+	int		count;
+
 	i = 0;
 	count = 0;
 	while (word[i] && is_ifs_char(word[i], ifs))
@@ -88,25 +62,26 @@ static char	**fields_from_word(const char *word, const char *ifs)
 			i++;
 		out[count] = ft_substr(word, start, i - start);
 		if (!out[count])
-			return (free_fields(out), NULL);
+			return (free_fields(out), 1);
 		count++;
 		while (word[i] && is_ifs_char(word[i], ifs))
 			i++;
 	}
-	return (out);
+	return (0);
 }
 
-static char	**single_field_dup(char *word)
+static char	**fields_from_word(const char *word, const char *ifs)
 {
 	char	**out;
+	int		count;
 
-	out = malloc(sizeof(char *) * 2);
+	count = count_fields(word, ifs);
+	out = malloc(sizeof(char *) * (count + 1));
 	if (!out)
 		return (NULL);
-	out[0] = ft_strdup(word);
-	if (!out[0])
-		return (free(out), NULL);
-	out[1] = NULL;
+	out[count] = NULL;
+	if (fill_fields(out, word, ifs))
+		return (NULL);
 	return (out);
 }
 
