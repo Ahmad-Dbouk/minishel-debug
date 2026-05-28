@@ -21,7 +21,7 @@ void	handle_interactive_line(t_loop_ctx *ctx)
 	ctx->head = init_token(ctx->line, &ctx->sh);
 	if (!ctx->head)
 	{
-		ctx->sh.last_status = 2;
+		ctx->sh.last_status = 0;
 		return ;
 	}
 	ctx->p = parse_token(ctx->head);

@@ -42,6 +42,20 @@ typedef struct s_token_vars
 	struct s_token	*next;
 }	t_token_vars;
 
+typedef struct s_expand_ctx
+{
+	int	i;
+	int	j;
+	int	inside_dquotes;
+}	t_expand_ctx;
+
+typedef struct s_insert_ctx
+{
+	t_shell			*sh;
+	t_token_vars	*vars;
+	int				ok;
+}	t_insert_ctx;
+
 t_token		*init_token(char *line, t_shell *sh);
 int			check(char *line, t_token_vars *vars);
 int			is_special(char *line, t_token_vars vars);
@@ -62,10 +76,8 @@ char		*ft_str_cut(char *str, int start, int end);
 char		*ft_str_empty(void);
 char		*ft_str_concat(char *s1, char *s2);
 int			is_white_space(char c);
-char		*handle_single_case(t_shell *sh, char *line, int *i, int *j,
-			int inside_dquotes);
-char		*ft_expand(char *line, int *i, int *j, t_shell *sh,
-			int inside_dquotes);
+char		*handle_single_case(t_shell *sh, char *line, t_expand_ctx *ctx);
+char		*ft_expand(char *line, t_shell *sh, t_expand_ctx *ctx);
 char		*ft_end_split(char *line, char *str, char *cut, t_token_vars *vars);
 t_token		*init_token(char *line, t_shell *sh);
 void		print_tokens(t_token *head);
@@ -95,7 +107,7 @@ char		*return_malloc_fail(char *str);
 char		*handle_no_qaute(char *str, char *line,
 				t_shell *sh, t_token_vars *vars);
 t_token		*insert_no_qaute(char *str, char *line,
-				t_token *head, t_shell *sh, t_token_vars *vars);
+				t_token **head, t_insert_ctx *ctx);
 void		skip_spaces(char *line, t_token_vars *vars);
 char		*extract_eof(char *line, t_token_vars *vars, int *expand_heredoc);
 int			find_closing_quate(char *line, t_token_vars *vars, char c);

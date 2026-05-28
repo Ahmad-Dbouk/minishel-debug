@@ -79,26 +79,24 @@ void	skip_white_spaces(char *line, t_token_vars *vars)
 char	*handle_dollar_no_qautation(char *str, char *line,
 	t_shell *sh, t_token_vars *vars)
 {
-	char	*cut;
+	char			*cut;
+	t_expand_ctx	ctx;
 
 	cut = ft_str_cut(line, vars->j, vars->i);
 	vars->j = ++vars->i;
 	if (!cut)
-	{
-		if (str)
-			free(str);
-		return (NULL);
-	}
+		return (return_malloc_fail(str));
 	str = ft_str_concat(str, cut);
 	if (!str)
 		return (NULL);
-	cut = ft_expand(line, &vars->i, &vars->j, sh, 0);
+	ctx.i = vars->i;
+	ctx.j = vars->j;
+	ctx.inside_dquotes = 0;
+	cut = ft_expand(line, sh, &ctx);
 	if (!cut)
-	{
-		if (str)
-			free(str);
-		return (NULL);
-	}
+		return (return_malloc_fail(str));
+	vars->i = ctx.i;
+	vars->j = ctx.j;
 	str = ft_str_concat(str, cut);
 	if (!str)
 		return (NULL);

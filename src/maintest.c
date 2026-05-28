@@ -10,9 +10,7 @@
 /*																			*/
 /* ************************************************************************** */
 
-#include <stdio.h>
 #include "../includes/minishell.h"
-#include "../includes/lexer.h"
 
 int	main(int argc, char **argv, char **envp)
 {

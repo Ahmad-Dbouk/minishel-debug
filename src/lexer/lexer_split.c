@@ -21,12 +21,16 @@ void	skip_spaces(char *line, t_token_vars *vars)
 		vars->i++;
 }
 
-static t_token	*consume_special_segment(char *line, t_shell *sh,
-		t_token *head, t_token_vars *vars)
+static int	consume_special_segment(char *line, t_shell *sh,
+		t_token **head, t_token_vars *vars)
 {
-	char	*str;
+	char			*str;
+	t_insert_ctx	ctx;
 
 	str = NULL;
+	ctx.sh = sh;
+	ctx.vars = vars;
+	ctx.ok = 1;
 	set_str_i_j(&str, vars);
 	vars->split_fields = 1;
 	while (is_special(line, *vars))
@@ -35,14 +39,14 @@ static t_token	*consume_special_segment(char *line, t_shell *sh,
 		{
 			str = handle_no_qaute(str, line, sh, vars);
 			if (!str)
-				return (free_token(head), NULL);
+				return (free_token(*head), 1);
 		}
 		vars->i++;
 	}
-	head = insert_no_qaute(str, line, head, sh, vars);
-	if (!head)
-		return (NULL);
-	return (head);
+	insert_no_qaute(str, line, head, &ctx);
+	if (!ctx.ok)
+		return (1);
+	return (0);
 }
 
 t_token	*ft_split_line(char *line, t_shell *sh, t_token *head)
@@ -66,8 +70,7 @@ t_token	*ft_split_line(char *line, t_shell *sh, t_token *head)
 		}
 		if (is_special(line, vars))
 		{
-			head = consume_special_segment(line, sh, head, &vars);
-			if (!head)
+			if (consume_special_segment(line, sh, &head, &vars))
 				return (NULL);
 		}
 		skip_spaces(line, &vars);

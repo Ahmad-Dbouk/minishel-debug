@@ -15,54 +15,58 @@
 #include "../../libft/libft.h"
 #include "../../includes/env.h"
 
-static t_token	*insert_split_word(char *str, t_token *head, t_shell *sh)
+static t_token	*insert_split_word(char *str, t_token *head,
+	t_shell *sh, int *ok)
 {
 	char	**fields;
 
 	fields = split_word_ifs(str, sh);
 	free(str);
 	if (!fields)
-		return (free_token(head), NULL);
+		return ((*ok) = 0, free_token(head), NULL);
 	if (!fields[0])
-		return (free(fields), head);
+		return ((*ok) = 1, free(fields), head);
 	if (!fields[1])
 	{
 		head = insert_at_tail(head, fields[0], TOK_WORD);
 		free(fields);
 		if (!head)
-			return (NULL);
-		return (head);
+			return ((*ok) = 0, NULL);
+		return ((*ok) = 1, head);
 	}
-	return (insert_fields_at_tail(head, fields));
+	head = insert_fields_at_tail(head, fields);
+	if (!head)
+		return ((*ok) = 0, NULL);
+	return ((*ok) = 1, head);
 }
 
 t_token	*insert_no_qaute(char *str, char *line,
-	t_token *head, t_shell *sh, t_token_vars *vars)
+	t_token **head, t_insert_ctx *ctx)
 {
 	char	*cut;
 
-	cut = ft_str_cut(line, vars->j, vars->i);
+	cut = ft_str_cut(line, ctx->vars->j, ctx->vars->i);
 	if (!cut)
 	{
 		if (str)
 			free(str);
-		free_token(head);
-		return (NULL);
+		free_token(*head);
+		return (ctx->ok = 0, NULL);
 	}
 	str = ft_str_concat(str, cut);
 	if (!str)
-		return (free_token(head), NULL);
-	if (vars->split_fields)
+		return (ctx->ok = 0, free_token(*head), NULL);
+	if (ctx->vars->split_fields)
 	{
-		head = insert_split_word(str, head, sh);
-		if (!head)
+		*head = insert_split_word(str, *head, ctx->sh, &ctx->ok);
+		if (!(ctx->ok))
 			return (NULL);
-		return (head);
+		return (*head);
 	}
-	head = insert_at_tail(head, str, TOK_WORD);
-	if (!head)
-		return (NULL);
-	return (head);
+	*head = insert_at_tail(*head, str, TOK_WORD);
+	if (!(*head))
+		return (ctx->ok = 0, NULL);
+	return (ctx->ok = 1, *head);
 }
 
 char	*handle_no_qaute(char *str, char *line,

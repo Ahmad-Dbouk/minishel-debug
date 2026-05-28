@@ -48,59 +48,57 @@ int	is_white_space(char c)
 	return (0);
 }
 
-char	*handle_single_case(t_shell *sh, char *line, int *i, int *j,
-	int inside_dquotes)
+char	*handle_single_case(t_shell *sh, char *line, t_expand_ctx *ctx)
 {
 	char	*str;
 	char	*tmp;
 
-	tmp = NULL;
-	if (line[*i] && line[*i] == '?')
-		return ((*j) = ++(*i), ft_itoa(sh->last_status));
-	if (line[*i] == '{')
+	if (line[ctx->i] && line[ctx->i] == '?')
+		return ((ctx->j) = ++(ctx->i), ft_itoa(sh->last_status));
+	if (line[ctx->i] == '{')
 	{
-		*j = ++(*i);
-		while (line[*i] && line[*i] != '}')
-			(*i)++;
-		if (!line[*i])
+		ctx->j = ++(ctx->i);
+		while (line[ctx->i] && line[ctx->i] != '}')
+			(ctx->i)++;
+		if (!line[ctx->i])
 			return (NULL);
-		str = ft_str_cut(line, *j, *i);
+		str = ft_str_cut(line, ctx->j, ctx->i);
 		if (!str)
 			return (NULL);
 		tmp = env_find_alias(sh->env, str);
 		free(str);
-		(*j) = ++(*i);
+		(ctx->j) = ++(ctx->i);
 		if (!tmp)
 			return (ft_str_empty());
 		return (ft_strdup(tmp));
 	}
-	if (!line[*i])
+	if (!line[ctx->i])
 		return (ft_strdup("$"));
-	if (line[*i] == '"')
+	if (line[ctx->i] == '"' || line[ctx->i] == '\'')
 	{
-		if (inside_dquotes)
+		if (ctx->inside_dquotes)
 			return (ft_strdup("$"));
 		return (ft_str_empty());
 	}
 	return (ft_strdup("$"));
 }
 
-char	*ft_expand(char *line, int *i, int *j, t_shell *sh, int inside_dquotes)
+char	*ft_expand(char *line, t_shell *sh, t_expand_ctx *ctx)
 {
 	char	*tmp;
 	char	*str;
 
 	tmp = NULL;
-	while (line[*i] && (ft_isalnum(line[*i]) || line[*i] == '_'))
-		(*i)++;
-	if ((*i) == (*j))
-		return (handle_single_case(sh, line, i, j, inside_dquotes));
-	str = ft_str_cut(line, *j, *i);
+	while (line[ctx->i] && (ft_isalnum(line[ctx->i]) || line[ctx->i] == '_'))
+		(ctx->i)++;
+	if ((ctx->i) == (ctx->j))
+		return (handle_single_case(sh, line, ctx));
+	str = ft_str_cut(line, ctx->j, ctx->i);
 	if (!str)
 		return (NULL);
 	tmp = env_find_alias(sh->env, str);
 	free(str);
-	(*j) = (*i);
+	ctx->j = ctx->i;
 	if (!tmp)
 		return (ft_str_empty());
 	return (ft_strdup(tmp));

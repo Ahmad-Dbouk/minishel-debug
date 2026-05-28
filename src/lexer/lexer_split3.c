@@ -15,11 +15,30 @@
 #include "../../libft/libft.h"
 #include "../../includes/env.h"
 
+static int	append_dquoted_expansion(char **str, char *line,
+	t_shell *sh, t_token_vars *vars)
+{
+	char			*exp;
+	t_expand_ctx	ctx;
+
+	ctx.i = vars->i;
+	ctx.j = vars->j;
+	ctx.inside_dquotes = 1;
+	exp = ft_expand(line, sh, &ctx);
+	if (!exp)
+		return (1);
+	vars->i = ctx.i;
+	vars->j = ctx.j;
+	*str = ft_str_concat(*str, exp);
+	if (!(*str))
+		return (1);
+	return (0);
+}
+
 char	*ft_split_qoutation(char *line, char *str,
 	t_shell *sh, t_token_vars *vars)
 {
 	char	*cut;
-	char	*exp;
 
 	while (line[vars->i] && line[vars->i] != '\"')
 	{
@@ -32,12 +51,8 @@ char	*ft_split_qoutation(char *line, char *str,
 			if (!str)
 				return (NULL);
 			vars->j = ++(vars->i);
-			exp = ft_expand(line, &vars->i, &vars->j, sh, 1);
-			if (!exp)
+			if (append_dquoted_expansion(&str, line, sh, vars))
 				return (free(str), NULL);
-			str = ft_str_concat(str, exp);
-			if (!str)
-				return (NULL);
 		}
 		else
 			(vars->i)++;
