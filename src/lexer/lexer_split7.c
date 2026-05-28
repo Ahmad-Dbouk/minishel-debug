@@ -39,7 +39,7 @@ t_token	*handle_special_char(char *str, char *line,
 	return (head);
 }
 
-int	is_special(char *line, t_token_vars vars)
+int	is_word_char(char *line, t_token_vars vars)
 {
 	if (line[vars.i] && line[vars.i] != '|' && line[vars.i] != '<'
 		&& line[vars.i] != '>' && !is_white_space(line[vars.i]))

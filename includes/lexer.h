@@ -58,7 +58,7 @@ typedef struct s_insert_ctx
 
 t_token		*init_token(char *line, t_shell *sh);
 int			check(char *line, t_token_vars *vars);
-int			is_special(char *line, t_token_vars vars);
+int			is_word_char(char *line, t_token_vars vars);
 t_token		*handle_special_char(char *str, char *line,
 				t_token *head, t_token_vars *vars);
 void		set_str_i_j(char **str, t_token_vars *vars);

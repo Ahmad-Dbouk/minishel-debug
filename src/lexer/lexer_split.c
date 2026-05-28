@@ -33,7 +33,7 @@ static int	consume_special_segment(char *line, t_shell *sh,
 	ctx.ok = 1;
 	set_str_i_j(&str, vars);
 	vars->split_fields = 1;
-	while (is_special(line, *vars))
+	while (is_word_char(line, *vars))
 	{
 		if (check(line, vars))
 		{
@@ -68,7 +68,7 @@ t_token	*ft_split_line(char *line, t_shell *sh, t_token *head)
 			if (!head)
 				return (NULL);
 		}
-		if (is_special(line, vars))
+		if (is_word_char(line, vars))
 		{
 			if (consume_special_segment(line, sh, &head, &vars))
 				return (NULL);
