@@ -80,7 +80,7 @@ char		*ft_str_concat(char *s1, char *s2);
 int			is_white_space(char c);
 char		*handle_single_case(t_shell *sh, char *line, t_expand_ctx *ctx);
 char		*ft_expand(char *line, t_shell *sh, t_expand_ctx *ctx);
-char		*ft_end_split(char *line, char *str, char *cut, t_token_vars *vars);
+char		*ft_end_split(char *line, char *str, t_token_vars *vars);
 t_token		*init_token(char *line, t_shell *sh);
 void		print_tokens(t_token *head);
 const char	*toktype_to_str(t_toktype type);

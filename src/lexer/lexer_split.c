@@ -11,8 +11,6 @@
 /* ************************************************************************** */
 
 #include "../../includes/lexer.h"
-#include "../../includes/minishell.h"
-#include "../../libft/libft.h"
 #include "../../includes/env.h"
 
 void	skip_spaces(char *line, t_token_vars *vars)

@@ -11,9 +11,6 @@
 /* ************************************************************************** */
 
 #include "../../includes/lexer.h"
-#include "../../includes/minishell.h"
-#include "../../libft/libft.h"
-#include "../../includes/env.h"
 
 t_token	*handle_special_char(char *str, char *line,
 	t_token *head, t_token_vars *vars)

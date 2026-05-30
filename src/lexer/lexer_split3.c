@@ -40,6 +40,7 @@ char	*ft_split_qoutation(char *line, char *str,
 {
 	char	*cut;
 
+	cut = NULL;
 	while (line[vars->i] && line[vars->i] != '\"')
 	{
 		if (line[vars->i] == '$')
@@ -57,7 +58,7 @@ char	*ft_split_qoutation(char *line, char *str,
 		else
 			(vars->i)++;
 	}
-	return (ft_end_split(line, str, cut, vars));
+	return (ft_end_split(line, str, vars));
 }
 
 const char	*toktype_to_str(t_toktype type)

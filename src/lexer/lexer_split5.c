@@ -66,6 +66,8 @@ char	*handle_double_quote(char *str, char *line,
 	vars->i++;
 	vars->j = vars->i;
 	str = ft_split_qoutation(line, str, sh, vars);
+	if (!str)
+		return (NULL);
 	return (str);
 }
 

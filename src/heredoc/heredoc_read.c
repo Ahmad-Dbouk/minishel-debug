@@ -35,15 +35,10 @@ static int	write_heredoc_line(int fd, t_shell *sh, t_redir *r, char *str)
 	return (0);
 }
 
-int	prepare_heredocs(t_shell *sh, t_redir *r)
+static int	read_heredoc_loop(t_shell *sh, t_redir *r, int *pipe_fd)
 {
-	int		pipe_fd[2];
 	char	*str;
 
-	if (!r || !r->target)
-		return (0);
-	if (pipe(pipe_fd) == -1)
-		return (1);
 	while (1)
 	{
 		str = readline("> ");
@@ -61,6 +56,19 @@ int	prepare_heredocs(t_shell *sh, t_redir *r)
 			return (1);
 		}
 	}
+	return (0);
+}
+
+int	prepare_heredocs(t_shell *sh, t_redir *r)
+{
+	int	pipe_fd[2];
+
+	if (!r || !r->target)
+		return (0);
+	if (pipe(pipe_fd) == -1)
+		return (1);
+	if (read_heredoc_loop(sh, r, pipe_fd))
+		return (1);
 	close(pipe_fd[1]);
 	r->heredoc_fd = pipe_fd[0];
 	return (0);

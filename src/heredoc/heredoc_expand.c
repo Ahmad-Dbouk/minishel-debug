@@ -10,21 +10,37 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
 #include "../../includes/lexer.h"
 
-static char	*append_tail(char *str, char *line, t_token_vars *vars)
+static char	*append_segment(char *str, char *line, int start, int end)
 {
 	char	*cut;
 
-	cut = ft_str_cut(line, vars->j, vars->i);
+	cut = ft_str_cut(line, start, end);
 	if (!cut)
-	{
-		if (str)
-			free(str);
-		return (NULL);
-	}
+		return (free(str), NULL);
 	str = ft_str_concat(str, cut);
+	return (str);
+}
+
+static char	*expand_dollar(char *str, char *line, t_token_vars *vars,
+		t_shell *sh)
+{
+	t_expand_ctx	ctx;
+	char			*exp;
+
+	str = append_segment(str, line, vars->j, vars->i);
+	if (!str)
+		return (NULL);
+	ctx.i = vars->i + 1;
+	ctx.j = ctx.i;
+	ctx.inside_dquotes = 1;
+	exp = ft_expand(line, sh, &ctx);
+	if (!exp)
+		return (free(str), NULL);
+	vars->i = ctx.i;
+	vars->j = ctx.i;
+	str = ft_str_concat(str, exp);
 	return (str);
 }
 
@@ -38,15 +54,14 @@ char	*expand_heredoc_line(t_shell *sh, char *line)
 	vars.j = 0;
 	while (line[vars.i])
 	{
-		if (line[vars.i] == '\'' || line[vars.i] == '"'
-			|| line[vars.i] == '$')
+		if (line[vars.i] == '$')
 		{
-			str = handle_no_qaute(str, line, sh, &vars);
+			str = expand_dollar(str, line, &vars, sh);
 			if (!str)
 				return (NULL);
 		}
 		else
 			vars.i++;
 	}
-	return (append_tail(str, line, &vars));
+	return (append_segment(str, line, vars.j, vars.i));
 }

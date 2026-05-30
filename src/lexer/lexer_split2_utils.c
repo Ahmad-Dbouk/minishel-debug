@@ -12,14 +12,18 @@
 
 #include "../../includes/lexer.h"
 
-char	*ft_end_split(char *line, char *str, char *cut, t_token_vars *vars)
+char	*ft_end_split(char *line, char *str, t_token_vars *vars)
 {
+	char	*cut;
+
 	if (!line[vars->i])
 		return (free(str), NULL);
 	cut = ft_str_cut(line, vars->j, vars->i);
 	if (!cut)
 		return (free(str), NULL);
 	str = ft_str_concat(str, cut);
-	vars->j = (vars->i) + 1;
+	if (!str)
+		return (NULL);
+	vars->j = vars->i + 1;
 	return (str);
 }
