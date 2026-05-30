@@ -19,7 +19,7 @@ void	skip_spaces(char *line, t_token_vars *vars)
 		vars->i++;
 }
 
-static int	consume_special_segment(char *line, t_shell *sh,
+static int	build_word_token(char *line, t_shell *sh,
 		t_token **head, t_token_vars *vars)
 {
 	char			*str;
@@ -68,7 +68,7 @@ t_token	*ft_split_line(char *line, t_shell *sh, t_token *head)
 		}
 		if (is_word_char(line, vars))
 		{
-			if (consume_special_segment(line, sh, &head, &vars))
+			if (build_word_token(line, sh, &head, &vars))
 				return (NULL);
 		}
 		skip_spaces(line, &vars);
