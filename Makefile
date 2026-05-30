@@ -14,7 +14,7 @@ SRCS := src/main.c src/loop.c ./src/lexer/lexer_split.c ./src/lexer/lexer_split1
 	  ./libft/ft_memmove.c ./libft/ft_itoa.c ./libft/ft_isprint.c ./libft/ft_isdigit.c \
 	  ./libft/ft_isascii.c ./libft/ft_isalpha.c ./libft/ft_isalnum.c \
 	  ./libft/ft_calloc.c ./libft/ft_bzero.c ./libft/ft_atoi.c ./libft/ft_strcmp.c \
-	  ./src/env/env_clear.c ./src/env/env_get.c ./src/env/env_init.c ./src/env/env_print.c \
+	  ./src/env/env_clear.c ./src/env/env_get.c ./src/env/env_init.c ./src/env/env_init2.c ./src/env/env_print.c \
 	  ./src/env/env_set.c ./src/env/env_to_envp_helper.c ./src/env/env_to_envp.c \
 	  ./src/env/env_unset.c ./src/parser/parser.c ./src/parser/parser_print.c \
 	  ./src/executor/exec_external.c ./src/executor/exec_one.c ./src/executor/path_resolve.c \

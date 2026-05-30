@@ -38,17 +38,24 @@ void	handle_interactive_line(t_loop_ctx *ctx)
 	free_cmds(ctx->p);
 }
 
+static int	ms_loop_init(t_loop_ctx *ctx, char **envp, char **argv)
+{
+	if (env_init_from_envp(&ctx->sh, envp) == -1)
+		return (1);
+	if (env_init_defaults(&ctx->sh, argv[0], !envp || !envp[0]) == -1)
+		return (1);
+	ctx->interactive = 0;
+	if (isatty(STDIN_FILENO) && isatty(STDOUT_FILENO))
+		ctx->interactive = 1;
+	return (0);
+}
+
 int	ms_loop(char **envp, char **argv)
 {
 	t_loop_ctx	ctx;
 
-	if (env_init_from_envp(&ctx.sh, envp) == -1)
+	if (ms_loop_init(&ctx, envp, argv))
 		return (1);
-	if (env_init_defaults(&ctx.sh, argv[0], !envp || !envp[0]) == -1)
-		return (1);
-	ctx.interactive = 0;
-	if (isatty(STDIN_FILENO) && isatty(STDOUT_FILENO))
-		ctx.interactive = 1;
 	while (1)
 	{
 		if (ctx.interactive)
